@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appBarHeight">60dp</dimen>
+    <dimen name="appBarFontSize">25dp</dimen>
+    <dimen name="mainShadowHeight">4dp</dimen>
+</resources>
