@@ -3,4 +3,26 @@
     <dimen name="appBarHeight">60dp</dimen>
     <dimen name="appBarFontSize">25dp</dimen>
     <dimen name="mainShadowHeight">4dp</dimen>
+
+    <dimen name="numberButtonSize">50dp</dimen>
+    <dimen name="numberButtonFontSize">25dp</dimen>
+    <dimen name="numberButtonMargin">5dp</dimen>
+
+    <dimen name="buttonOutlineWidth">2dp</dimen>
+    <dimen name="buttonCornerRadius">2dp</dimen>
+
+    <dimen name="actionButtonWidth">100dp</dimen>
+    <dimen name="actionButtonLayoutWidth">290dp</dimen>
+
+    <dimen name="actionButtonPadding">20dp</dimen>
+
+    <dimen name="historyButtonSize">50dp</dimen>
+    <dimen name="historyButtonPadding">10dp</dimen>
+
+    <dimen name="teamNameHeight">50dp</dimen>
+    <dimen name="teamNameFontSize">30dp</dimen>
+    <dimen name="teamScoreHeight">100dp</dimen>
+    <dimen name="teamScoreFontSize">40dp</dimen>
+    <dimen name="teamMovesWidth">25dp</dimen>
+    <dimen name="teamMovesFontSize">15dp</dimen>
 </resources>

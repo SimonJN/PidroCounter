@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/numberButtonSize"
+    android:layout_height="@dimen/numberButtonSize"
+    android:layout_margin="@dimen/numberButtonMargin"
+    android:background="@drawable/button_outline"
+    android:textColor="@color/textColorDark"
+    android:textSize="@dimen/numberButtonFontSize"
+    android:fontFamily="sans-serif"/>

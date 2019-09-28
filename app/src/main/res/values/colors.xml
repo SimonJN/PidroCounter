@@ -4,5 +4,15 @@
     <color name="colorPrimaryDark">#737474</color>
     <color name="colorAccent">#00796B</color>
     <color name="textColorDark">#000000</color>
+    <color name="textColorLight">#ffffff</color>
     <color name="shadowColor">#CCCCCC</color>
+
+    <color name="dribbleColor">#D9D9D9</color>
+
+    <color name="redTeamLight">#F9BABA</color>
+    <color name="redTeamMiddle">#FF9A9A</color>
+    <color name="redTeamDark">#FF7B7B</color>
+    <color name="blueTeamLight">#ABC0FB</color>
+    <color name="blueTeamMiddle">#9AB4FF</color>
+    <color name="blueTeamDark">#7B9EFF</color>
 </resources>
