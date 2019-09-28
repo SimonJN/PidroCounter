@@ -8,23 +8,35 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/appBarHeight"
-            android:background="@android:color/white"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:text="@string/history"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/appBarFontSize"
-            android:textStyle="bold" />
-        <View
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/appBarHeight"
+                android:background="@android:color/white"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="@string/history"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/appBarFontSize"
+                android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mainShadowHeight"
+                android:background="@drawable/main_shadow"
+                android:rotation="180"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/active_games"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mainShadowHeight"
-            android:background="@drawable/main_shadow"
-            android:rotation="180"/>
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>

@@ -25,4 +25,11 @@
     <dimen name="teamScoreFontSize">40dp</dimen>
     <dimen name="teamMovesWidth">25dp</dimen>
     <dimen name="teamMovesFontSize">15dp</dimen>
+
+    <dimen name="savedGamesHeight">70dp</dimen>
+    <dimen name="savedGamesNameFontSize">20dp</dimen>
+    <dimen name="savedGamesDateFontSize">15dp</dimen>
+    <dimen name="savedGamesPadding">8dp</dimen>
+    <dimen name="savedGamesSeparatorHeight">1dp</dimen>
+    <dimen name="savedGamesArrowSize">40dp</dimen>
 </resources>

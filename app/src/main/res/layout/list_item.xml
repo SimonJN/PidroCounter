@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/savedGamesHeight"
+        android:padding="@dimen/savedGamesPadding">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AoE vs SoW"
+                android:textColor="@color/textColorDark"
+                android:fontFamily="sans-serif"
+                android:textSize="@dimen/savedGamesNameFontSize"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Senast spelad: 29-09-2019"
+                android:textColor="@color/textColorMiddle"
+                android:fontFamily="sans-serif"
+                android:textSize="@dimen/savedGamesDateFontSize"/>
+        </LinearLayout>
+        <ImageButton
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/savedGamesArrowSize"
+            android:layout_height="@dimen/savedGamesArrowSize"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_right_arrow"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+    </RelativeLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/savedGamesSeparatorHeight"
+        android:background="@drawable/saved_games_separator"/>
+</LinearLayout>
