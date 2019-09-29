@@ -32,6 +32,7 @@
             android:id="@+id/main_navigation"
             android:layout_width="match_parent"
             android:layout_height="@dimen/appBarHeight"
+            android:background="@color/colorPrimary"
             app:itemIconTint="@color/bottom_navigation_state"
             app:itemTextColor="@color/bottom_navigation_state"
             app:menu="@menu/main_bottom_navigation" />

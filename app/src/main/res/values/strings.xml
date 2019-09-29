@@ -7,7 +7,11 @@
     <string name="win">Vinn</string>
     <string name="we">VI</string>
     <string name="they">DE</string>
-    <string name="delete">Återställ</string>
+    <string name="delete">Radera</string>
     <string name="ask_delete">Vill du radera den här rundan?</string>
     <string name="cancel">Avbryt</string>
+    <string name="done">Färdig</string>
+    <string name="change_name">Ändra namn</string>
+    <string name="new_round">Ny runda</string>
+    <string name="last_played">Senast spelad:</string>
 </resources>

@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
-    public Fragment counter_fragment = new CounterFragment();
-    public Fragment history_fragment = new HistoryFragment();
-    public Fragment settings_fragment = new SettingsFragment();
-
     public FragmentManager fm = getSupportFragmentManager();
+
+    public Fragment counter_fragment = new CounterFragment();
+    public Fragment history_fragment;
+    public Fragment settings_fragment = new SettingsFragment();
 
     public BottomNavigationView main_nav;
 
@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         main_nav = (BottomNavigationView) findViewById(R.id.main_navigation);
         //Set the middle button as selected
         main_nav.setSelectedItemId(R.id.action_counter);
+
+        history_fragment = new HistoryFragment(fm, counter_fragment, main_nav);
         //Load the first fragment
         fm.beginTransaction().replace(R.id.main_container, counter_fragment).addToBackStack(null).commit();
         //Set the click listener for the navigation

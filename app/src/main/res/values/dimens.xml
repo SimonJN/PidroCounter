@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="appBarHeight">60dp</dimen>
+    <dimen name="appBarHeight">55dp</dimen>
     <dimen name="appBarFontSize">25dp</dimen>
     <dimen name="mainShadowHeight">4dp</dimen>
 
@@ -14,15 +14,17 @@
     <dimen name="actionButtonWidth">100dp</dimen>
     <dimen name="actionButtonLayoutWidth">290dp</dimen>
 
-    <dimen name="actionButtonPadding">20dp</dimen>
+    <dimen name="actionButtonPadding">10dp</dimen>
 
-    <dimen name="historyButtonSize">50dp</dimen>
-    <dimen name="historyButtonPadding">10dp</dimen>
+    <dimen name="manageButtonSize">50dp</dimen>
+    <dimen name="manageButtonPadding">10dp</dimen>
+    <dimen name="newGameButtonWidth">100dp</dimen>
+    <dimen name="newGameFontSize">15dp</dimen>
 
-    <dimen name="teamNameHeight">50dp</dimen>
-    <dimen name="teamNameFontSize">30dp</dimen>
+    <dimen name="teamNameHeight">35dp</dimen>
+    <dimen name="teamNameFontSize">20dp</dimen>
     <dimen name="teamScoreHeight">100dp</dimen>
-    <dimen name="teamScoreFontSize">40dp</dimen>
+    <dimen name="teamScoreFontSize">50dp</dimen>
     <dimen name="teamMovesWidth">25dp</dimen>
     <dimen name="teamMovesFontSize">15dp</dimen>
 
@@ -32,4 +34,6 @@
     <dimen name="savedGamesPadding">8dp</dimen>
     <dimen name="savedGamesSeparatorHeight">1dp</dimen>
     <dimen name="savedGamesArrowSize">40dp</dimen>
+
+    <dimen name="changeNameTextPadding">10dp</dimen>
 </resources>

@@ -4,5 +4,6 @@
     android:gravity="center"
     android:fontFamily="sans-serif"
     android:textSize="@dimen/teamMovesFontSize"
+    android:textColor="@color/textColorLight"
     android:layout_rowWeight="1"
     xmlns:android="http://schemas.android.com/apk/res/android" />

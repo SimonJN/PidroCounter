@@ -2,20 +2,32 @@ package simonjarn.pidrocounter;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,6 +35,9 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CounterFragment extends Fragment {
+    long currently_loaded = -1; //-1=unset
+
+    View root_view;
 
     int blue_score = 0;
     int red_score = 0;
@@ -43,57 +58,90 @@ public class CounterFragment extends Fragment {
     GridLayout blue_moves_grid;
     GridLayout red_moves_grid;
 
+    TextView name_edit;
+    TextView blue_name_edit;
+    TextView red_name_edit;
+
+    String name;
+    String blue_name;
+    String red_name;
+
+    GridLayout number_grid;
+
+    ImageButton restart_button;
+    ImageButton undo_button;
+    Button new_game_button;
+
+
     public CounterFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        blue_name = getResources().getString(R.string.they);
+        red_name = getResources().getString(R.string.we);
+
+        //Set the default name_edit, the date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date();
+        name = formatter.format(d);
+    }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View root_view = inflater.inflate(R.layout.counter_fragment, container, false);
+        root_view = inflater.inflate(R.layout.counter_fragment, container, false);
         //Get elements
-        GridLayout number_grid = root_view.findViewById(R.id.number_grid);
+        number_grid = root_view.findViewById(R.id.number_grid);
         red_score_text = root_view.findViewById(R.id.redTeamScore);
         blue_score_text = root_view.findViewById(R.id.blueTeamScore);
         blue_moves_grid = root_view.findViewById(R.id.blueTeamMoves);
         red_moves_grid = root_view.findViewById(R.id.redTeamMoves);
         win_button = root_view.findViewById(R.id.winButton);
         fail_button = root_view.findViewById(R.id.failButton);
-        final ImageButton restart_button = root_view.findViewById(R.id.restart);
-        final ImageButton undo_button = root_view.findViewById(R.id.undo);
+        restart_button = root_view.findViewById(R.id.restart);
+        undo_button = root_view.findViewById(R.id.undo);
+        new_game_button = root_view.findViewById(R.id.new_game);
 
-        for (int move : blue_moves) {
-            TextView move_text = (TextView) inflater.inflate(R.layout.team_move_text, blue_moves_grid, false);
-            move_text.setText(Integer.toString(move));
-            blue_moves_grid.addView(move_text);
-        }
+        name_edit = root_view.findViewById(R.id.title);
+        blue_name_edit = root_view.findViewById(R.id.blueTeamName);
+        red_name_edit = root_view.findViewById(R.id.redTeamName);
 
-        for (int move : red_moves) {
-            TextView move_text = (TextView) inflater.inflate(R.layout.team_move_text, blue_moves_grid, false);
-            move_text.setText(Integer.toString(move));
-            blue_moves_grid.addView(move_text);
-        }
+        setupUI();
 
-//        blue_score_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                changeTeam(1);
-//            }
-//        });
-//
-//        red_score_text.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                changeTeam(0);
-//            }
-//        });
+        name_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                 AlertDialog d = ChangeName((TextView) view, 0);
+                 d.show();
+            }
+        });
+
+        blue_name_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog d = ChangeName((TextView) view, 1);
+                d.show();
+            }
+        });
+
+        red_name_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog d = ChangeName((TextView) view, 2);
+                d.show();
+            }
+        });
 
         win_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 changeAction(0);
+                SaveGameAsync s = new SaveGameAsync();
+                s.execute();
             }
         });
 
@@ -101,6 +149,8 @@ public class CounterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 changeAction(1);
+                SaveGameAsync s = new SaveGameAsync();
+                s.execute();
             }
         });
 
@@ -142,18 +192,25 @@ public class CounterFragment extends Fragment {
                         }
                     }
                 }
+                SaveGameAsync s = new SaveGameAsync();
+                s.execute();
             }
         });
 
         restart_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog ad = AskOption();
+                AlertDialog ad = AskDelete();
                 ad.show();
             }
         });
 
-        blue_score_text.setText(Integer.toString(blue_score));
+        new_game_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset();
+            }
+        });
 
         for (int i = 0; i < 15; i++) {
             Button bt = (Button) inflater.inflate(R.layout.number_button, number_grid, false);
@@ -195,11 +252,23 @@ public class CounterFragment extends Fragment {
                             red_moves_grid.removeViewAt(0);
                         }
                     }
+                    if (selected_action == 1) {
+                        changeAction(0);
+                    }
+                    SaveGameAsync s = new SaveGameAsync();
+                    s.execute();
                 }
             });
             number_grid.addView(bt);
         }
-        
+        try {
+            Game g = (Game) getArguments().getParcelable("game");
+            loadFromGame(g);
+            getArguments().remove("game");
+        } catch (Exception e) {
+        }
+
+
         return root_view;
     }
 
@@ -238,10 +307,95 @@ public class CounterFragment extends Fragment {
             }
         }
     }
-    private AlertDialog AskOption()
+
+    private void setupUI() {
+        //Reset to the latest state when loaded
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+
+        blue_moves_grid.removeAllViews();
+        for (int move : blue_moves) {
+            TextView move_text = (TextView) inflater.inflate(R.layout.team_move_text, blue_moves_grid, false);
+            move_text.setText(Integer.toString(move));
+            blue_moves_grid.addView(move_text);
+            if (blue_moves_grid.getChildCount() > 5) {
+                blue_moves_grid.removeViewAt(0);
+            }
+        }
+
+        red_moves_grid.removeAllViews();
+        for (int move : red_moves) {
+            TextView move_text = (TextView) inflater.inflate(R.layout.team_move_text, red_moves_grid, false);
+            move_text.setText(Integer.toString(move));
+            red_moves_grid.addView(move_text);
+            if (red_moves_grid.getChildCount() > 5) {
+                red_moves_grid.removeViewAt(0);
+            }
+        }
+
+        changeAction(selected_action);
+        changeTeam(selected_team);
+
+        blue_score_text.setText(Integer.toString(blue_score));
+        red_score_text.setText(Integer.toString(red_score));
+
+        name_edit.setText((String)name);
+        blue_name_edit.setText((String)blue_name);
+        red_name_edit.setText((String)red_name);
+    }
+
+    public void reset(){
+        blue_score = 0;
+        red_score = 0;
+        last_changed = 0;
+        selected_action = 0;
+        selected_team = 0;
+        //Set the default name_edit, the date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date d = new Date();
+        name = formatter.format(d);
+        red_name = getResources().getString(R.string.we);
+        blue_name = getResources().getString(R.string.they);
+
+        blue_moves.clear();
+
+        red_moves.clear();
+
+        currently_loaded = -1;
+
+        setupUI();
+    }
+
+    public void loadFromGame(Game g) {
+        blue_score = g.blue_score;
+        red_score = g.red_score;
+        last_changed = g.last_changed;
+        selected_action = g.selected_action;
+        selected_team = g.selected_team;
+        name = g.name;
+        red_name = g.red_name;
+        blue_name = g.blue_name;
+
+        blue_moves.clear();
+        String blue_move_string = g.blue_moves;
+        for (String move : blue_move_string.split(",")) {
+            blue_moves.add(Integer.parseInt(move));
+        }
+
+        red_moves.clear();
+        String red_move_string = g.red_moves;
+        for (String move : red_move_string.split(",")) {
+            red_moves.add(Integer.parseInt(move));
+        }
+
+        currently_loaded = g.id;
+
+        setupUI();
+    }
+
+    private AlertDialog AskDelete()
     {
-        AlertDialog myQuittingDialogBox =new AlertDialog.Builder(getContext())
-                //set message, title, and icon
+        AlertDialog delete_dialog =new AlertDialog.Builder(getContext(), R.style.DialogTheme)
+                //set message, name_edit, and icon
                 .setTitle(getResources().getString(R.string.delete))
                 .setMessage(getResources().getString(R.string.ask_delete))
 
@@ -249,17 +403,9 @@ public class CounterFragment extends Fragment {
 
                     public void onClick(DialogInterface dialog, int which_button) {
                         //your deleting code
-                        blue_moves = new ArrayList<Integer>();
-                        red_moves = new ArrayList<Integer>();
-                        red_score = 0;
-                        blue_score = 0;
-                        blue_moves_grid.removeAllViews();
-                        red_moves_grid.removeAllViews();
-                        red_score_text.setText("0");
-                        blue_score_text.setText("0");
-                        changeAction(0);
-                        changeTeam(0);
-                        last_changed = 0;
+                        DeleteGameAsync dga = new DeleteGameAsync();
+                        dga.execute(currently_loaded);
+                        reset();
                         dialog.dismiss();
                     }
 
@@ -271,5 +417,102 @@ public class CounterFragment extends Fragment {
                     }
                 })
                 .create();
-        return myQuittingDialogBox;}
+        return delete_dialog;
+    }
+
+    private AlertDialog ChangeName(TextView text, final int edit_index) {
+        final TextView t = text;
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(), R.style.DialogTheme);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        final View dialogView = inflater.inflate(R.layout.edit_name_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText edit = (EditText) dialogView.findViewById(R.id.edit_text);
+        edit.setText(text.getText());
+        if (edit_index == 0) {
+            edit.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25)});
+        }
+
+        dialogBuilder.setTitle(getResources().getString(R.string.change_name));
+        dialogBuilder.setPositiveButton(getResources().getString(R.string.done), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //do something with edt.getText().toString();
+                t.setText(edit.getText());
+                switch (edit_index) {
+                    case 0:
+                        name = edit.getText().toString();
+                        break;
+                    case 1:
+                        blue_name = edit.getText().toString();
+                        break;
+                    case 2:
+                        red_name = edit.getText().toString();
+                        break;
+                }
+                SaveGameAsync s = new SaveGameAsync();
+                s.execute();
+            }
+        });
+        dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        return b;
+    }
+
+    public class SaveGameAsync extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final GamesDatabase db = Room.databaseBuilder(getContext(),
+                    GamesDatabase.class, "Games").fallbackToDestructiveMigration().build();
+            Game g = new Game();
+            g.blue_score = blue_score;
+            g.red_score = red_score;
+            g.last_changed = last_changed;
+            g.selected_action = selected_action;
+            g.selected_team = selected_team;
+            g.name = name;
+            g.red_name = red_name;
+            g.blue_name = blue_name;
+            g.last_played = new Date().getTime();
+
+            String blue_move_string = "";
+            for (int move : blue_moves) {
+                blue_move_string += Integer.toString(move) + ",";
+            }
+            String red_move_string = "";
+            for (int move : red_moves) {
+                red_move_string += Integer.toString(move) + ",";
+            }
+
+            g.blue_moves = blue_move_string;
+            g.red_moves = red_move_string;
+
+            if (currently_loaded == -1) {
+                long id = db.gamesDAO().insertGame(g);
+                currently_loaded = id;
+            } else {
+                db.gamesDAO().deleteGame(currently_loaded);
+                long id = db.gamesDAO().insertGame(g);
+                //Set it again when it has a new id
+                currently_loaded = id;
+            }
+            db.close();
+            return null;
+        }
+    }
+
+    public class DeleteGameAsync extends AsyncTask<Long, Void, Void> {
+        @Override
+        protected Void doInBackground(Long... ids) {
+            Log.d("DELETE", "DELETING: " + ids[0]);
+            final GamesDatabase db = Room.databaseBuilder(getContext(),
+                    GamesDatabase.class, "Games").fallbackToDestructiveMigration().build();
+            db.gamesDAO().deleteGame(ids[0]);
+            db.close();
+            return null;
+        }
+    }
 }

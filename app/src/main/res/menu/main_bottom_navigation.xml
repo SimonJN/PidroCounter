@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
    <group android:checkableBehavior="single">
         <item android:id="@+id/action_history"
-            android:title="sparade"
+            android:title="@string/history"
             android:icon="@drawable/ic_history" />
         <item android:id="@+id/action_counter"
-            android:title="Räknare"
+            android:title="@string/counter"
             android:icon="@drawable/ic_notepad"
             android:checked="true"/>
         <item android:id="@+id/action_settings"
-            android:title="Inställningar"
+            android:title="@string/settings"
             android:icon="@drawable/ic_settings" />
    </group>
 </menu>

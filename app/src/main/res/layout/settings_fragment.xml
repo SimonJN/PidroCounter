@@ -4,27 +4,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsFragment">
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/appBarHeight"
+                android:background="@android:color/white"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="@string/settings"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/appBarFontSize"
+                android:textStyle="bold" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mainShadowHeight"
+                android:background="@drawable/main_shadow"
+                android:rotation="180"/>
+        </LinearLayout>
+        <TextView
+            android:padding="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textSize="25dp"
+            android:textColor="@color/textColorDark"
+            android:textAlignment="center"
+            android:text="Finns inga inställningar men här är lite credits"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/appBarHeight"
-            android:background="@android:color/white"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_outline"
+            android:text="Kod och design: Simon Järn"
             android:fontFamily="sans-serif"
-            android:gravity="center"
-            android:text="@string/settings"
-            android:textColor="@color/textColorDark"
-            android:textSize="@dimen/appBarFontSize"
-            android:textStyle="bold" />
-        <View
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/textColorDark"/>
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/mainShadowHeight"
-            android:background="@drawable/main_shadow"
-            android:rotation="180"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_outline"
+            android:text="Logo: Aron Samulin"
+            android:fontFamily="sans-serif"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/textColorDark"/>
+
     </LinearLayout>
 
 </FrameLayout>
