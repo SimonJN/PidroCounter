@@ -2,19 +2,10 @@ package simonjarn.pidrocounter;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.room.Room;
-
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -30,47 +20,44 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.room.Room;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CounterFragment extends Fragment {
-    long currently_loaded = -1; //-1=unset
-
-    View root_view;
-
-    int blue_score = 0;
-    int red_score = 0;
-
-    List<Integer> blue_moves = new ArrayList<Integer>();
-    List<Integer> red_moves = new ArrayList<Integer>();
-
-    int selected_team = 0; //0=red , 1=blue
-    int selected_action = 0; //0=win, 1=fail
-
-    int last_changed = 0; //0=red, 1=blue
-
-    Button fail_button;
-    Button win_button;
-
-    TextView red_score_text;
-    TextView blue_score_text;
     GridLayout blue_moves_grid;
-    GridLayout red_moves_grid;
+    private long currently_loaded = -1; //-1=unset
+    private View root_view;
+    private int blue_score = 0;
+    private int red_score = 0;
+    private List<Integer> blue_moves = new ArrayList<Integer>();
+    private List<Integer> red_moves = new ArrayList<Integer>();
+    private int selected_team = 0; //0=red , 1=blue
+    private int selected_action = 0; //0=win, 1=fail
+    private int last_changed = 0; //0=red, 1=blue
+    private Button fail_button;
+    private Button win_button;
+    private TextView red_score_text;
+    private TextView blue_score_text;
+    private GridLayout red_moves_grid;
 
-    TextView name_edit;
-    TextView blue_name_edit;
-    TextView red_name_edit;
+    private TextView name_edit;
+    private TextView blue_name_edit;
+    private TextView red_name_edit;
 
-    String name;
-    String blue_name;
-    String red_name;
+    private String name;
+    private String blue_name;
+    private String red_name;
 
-    GridLayout number_grid;
+    private GridLayout number_grid;
 
-    ImageButton restart_button;
-    ImageButton undo_button;
-    Button new_game_button;
+    private ImageButton restart_button;
+    private ImageButton undo_button;
+    private Button new_game_button;
 
 
     public CounterFragment() {
@@ -80,13 +67,11 @@ public class CounterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        blue_name = getResources().getString(R.string.they);
-        red_name = getResources().getString(R.string.we);
-
-        //Set the default name_edit, the date
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date d = new Date();
         name = formatter.format(d);
+        red_name = getResources().getString(R.string.we);
+        blue_name = getResources().getString(R.string.they);
     }
 
     @Override
@@ -112,11 +97,12 @@ public class CounterFragment extends Fragment {
 
         setupUI();
 
+        //Setup most of the click listeners
         name_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 AlertDialog d = ChangeName((TextView) view, 0);
-                 d.show();
+                AlertDialog d = ChangeName((TextView) view, 0);
+                d.show();
             }
         });
 
@@ -167,11 +153,11 @@ public class CounterFragment extends Fragment {
                         blue_moves.remove(last_child);
                         blue_moves_grid.removeViewAt(last_move_text);
                         changeTeam(1);
-                        last_changed = Math.abs(last_changed-1);
+                        last_changed = Math.abs(last_changed - 1);
                         if (blue_moves.size() > 4) {
                             TextView move = (TextView) inflater.inflate(R.layout.team_move_text, blue_moves_grid, false);
-                            move.setText(Integer.toString(blue_moves.get(blue_moves.size()-1-4)));
-                            blue_moves_grid.addView(move,0);
+                            move.setText(Integer.toString(blue_moves.get(blue_moves.size() - 1 - 4)));
+                            blue_moves_grid.addView(move, 0);
                         }
                     }
                 } else if (last_changed == 0) {
@@ -187,7 +173,7 @@ public class CounterFragment extends Fragment {
                         last_changed = Math.abs(last_changed - 1);
                         if (red_moves.size() > 4) {
                             TextView move = (TextView) inflater.inflate(R.layout.team_move_text, red_moves_grid, false);
-                            move.setText(Integer.toString(red_moves.get(red_moves.size()-1-4)));
+                            move.setText(Integer.toString(red_moves.get(red_moves.size() - 1 - 4)));
                             red_moves_grid.addView(move, 0);
                         }
                     }
@@ -212,10 +198,11 @@ public class CounterFragment extends Fragment {
             }
         });
 
+        //Generate the number buttons programmatically and set their clicklisteners
         for (int i = 0; i < 15; i++) {
             Button bt = (Button) inflater.inflate(R.layout.number_button, number_grid, false);
             if (i != 14) {
-                bt.setText(Integer.toString(i+1));
+                bt.setText(Integer.toString(i + 1));
             } else {
                 bt.setText(Integer.toString(28));
             }
@@ -223,7 +210,7 @@ public class CounterFragment extends Fragment {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int points = Integer.parseInt(((Button)view).getText().toString());
+                    int points = Integer.parseInt(((Button) view).getText().toString());
                     if (selected_action == 1) {
                         points = points * -1;
                     }
@@ -261,6 +248,8 @@ public class CounterFragment extends Fragment {
             });
             number_grid.addView(bt);
         }
+
+        //If the fragment was initialized with information from the initializer, try to load from that game
         try {
             Game g = (Game) getArguments().getParcelable("game");
             loadFromGame(g);
@@ -338,12 +327,12 @@ public class CounterFragment extends Fragment {
         blue_score_text.setText(Integer.toString(blue_score));
         red_score_text.setText(Integer.toString(red_score));
 
-        name_edit.setText((String)name);
-        blue_name_edit.setText((String)blue_name);
-        red_name_edit.setText((String)red_name);
+        name_edit.setText((String) name);
+        blue_name_edit.setText((String) blue_name);
+        red_name_edit.setText((String) red_name);
     }
 
-    public void reset(){
+    private void reset() {
         blue_score = 0;
         red_score = 0;
         last_changed = 0;
@@ -365,7 +354,7 @@ public class CounterFragment extends Fragment {
         setupUI();
     }
 
-    public void loadFromGame(Game g) {
+    private void loadFromGame(Game g) {
         blue_score = g.blue_score;
         red_score = g.red_score;
         last_changed = g.last_changed;
@@ -392,10 +381,8 @@ public class CounterFragment extends Fragment {
         setupUI();
     }
 
-    private AlertDialog AskDelete()
-    {
-        AlertDialog delete_dialog =new AlertDialog.Builder(getContext(), R.style.DialogTheme)
-                //set message, name_edit, and icon
+    private AlertDialog AskDelete() {
+        AlertDialog delete_dialog = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
                 .setTitle(getResources().getString(R.string.delete))
                 .setMessage(getResources().getString(R.string.ask_delete))
 
@@ -430,13 +417,12 @@ public class CounterFragment extends Fragment {
         final EditText edit = (EditText) dialogView.findViewById(R.id.edit_text);
         edit.setText(text.getText());
         if (edit_index == 0) {
-            edit.setFilters(new InputFilter[] {new InputFilter.LengthFilter(25)});
+            edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
         }
 
         dialogBuilder.setTitle(getResources().getString(R.string.change_name));
         dialogBuilder.setPositiveButton(getResources().getString(R.string.done), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //do something with edt.getText().toString();
                 t.setText(edit.getText());
                 switch (edit_index) {
                     case 0:
@@ -455,11 +441,10 @@ public class CounterFragment extends Fragment {
         });
         dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //pass
+                //Pass
             }
         });
-        AlertDialog b = dialogBuilder.create();
-        return b;
+        return dialogBuilder.create();
     }
 
     public class SaveGameAsync extends AsyncTask<Void, Void, Void> {
@@ -507,7 +492,6 @@ public class CounterFragment extends Fragment {
     public class DeleteGameAsync extends AsyncTask<Long, Void, Void> {
         @Override
         protected Void doInBackground(Long... ids) {
-            Log.d("DELETE", "DELETING: " + ids[0]);
             final GamesDatabase db = Room.databaseBuilder(getContext(),
                     GamesDatabase.class, "Games").fallbackToDestructiveMigration().build();
             db.gamesDAO().deleteGame(ids[0]);

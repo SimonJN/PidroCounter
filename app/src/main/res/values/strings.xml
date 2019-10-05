@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PidroCounter</string>
+    <string name="app_name">Pidro-räknare</string>
     <string name="settings">Inställningar</string>
     <string name="counter">Räknare</string>
     <string name="history">Sparade Spel</string>

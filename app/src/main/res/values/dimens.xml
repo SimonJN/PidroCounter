@@ -35,5 +35,5 @@
     <dimen name="savedGamesSeparatorHeight">1dp</dimen>
     <dimen name="savedGamesArrowSize">40dp</dimen>
 
-    <dimen name="changeNameTextPadding">10dp</dimen>
+    <dimen name="changeNameTextPadding">20dp</dimen>
 </resources>

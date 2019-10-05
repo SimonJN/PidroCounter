@@ -3,14 +3,7 @@ package simonjarn.pidrocounter;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.room.Room;
-
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +15,22 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.room.Room;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HistoryFragment extends Fragment {
-    List<Game> games;
+    private List<Game> games;
 
-    LinearLayout active_games;
+    private LinearLayout active_games;
 
-    FragmentManager fragment_manager;
-    Fragment counter_fragment;
-    BottomNavigationView main_nav;
+    private FragmentManager fragment_manager;
+    private Fragment counter_fragment;
+    private BottomNavigationView main_nav;
 
     public HistoryFragment(FragmentManager fm, Fragment counter, BottomNavigationView nav) {
         // Required empty public constructor
@@ -54,7 +51,8 @@ public class HistoryFragment extends Fragment {
         gt.execute();
         return root_view;
     }
-    public void updateList() {
+
+    private void updateList() {
         for (Game g : games) {
             LinearLayout item = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.list_item, active_games, false);
             TextView title = (TextView) item.findViewById(R.id.saved_title);
