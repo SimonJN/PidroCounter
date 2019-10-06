@@ -201,11 +201,7 @@ public class CounterFragment extends Fragment {
         //Generate the number buttons programmatically and set their clicklisteners
         for (int i = 0; i < 15; i++) {
             Button bt = (Button) inflater.inflate(R.layout.number_button, number_grid, false);
-            if (i != 14) {
-                bt.setText(Integer.toString(i + 1));
-            } else {
-                bt.setText(Integer.toString(28));
-            }
+            bt.setText(Integer.toString(i));
 
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
