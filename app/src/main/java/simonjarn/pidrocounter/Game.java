@@ -12,7 +12,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Game implements Parcelable {
+public class Game{
     public Game() {
 
     }
@@ -55,83 +55,4 @@ public class Game implements Parcelable {
 
     @ColumnInfo(name="last_played")
     public Long last_played;
-
-    protected Game(Parcel in) {
-        id = in.readByte() == 0x00 ? null : in.readLong();
-        name = in.readString();
-        date = in.readString();
-        blue_score = in.readByte() == 0x00 ? null : in.readInt();
-        red_score = in.readByte() == 0x00 ? null : in.readInt();
-        selected_team = in.readByte() == 0x00 ? null : in.readInt();
-        selected_action = in.readByte() == 0x00 ? null : in.readInt();
-        last_changed = in.readByte() == 0x00 ? null : in.readInt();
-        blue_name = in.readString();
-        red_name = in.readString();
-        blue_moves = in.readString();
-        red_moves = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeLong(id);
-        }
-        dest.writeString(name);
-        dest.writeString(date);
-        if (blue_score == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(blue_score);
-        }
-        if (red_score == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(red_score);
-        }
-        if (selected_team == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(selected_team);
-        }
-        if (selected_action == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(selected_action);
-        }
-        if (last_changed == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(last_changed);
-        }
-        dest.writeString(blue_name);
-        dest.writeString(red_name);
-        dest.writeString(blue_moves);
-        dest.writeString(red_moves);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Game> CREATOR = new Parcelable.Creator<Game>() {
-        @Override
-        public Game createFromParcel(Parcel in) {
-            return new Game(in);
-        }
-
-        @Override
-        public Game[] newArray(int size) {
-            return new Game[size];
-        }
-    };
 }

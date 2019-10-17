@@ -13,8 +13,11 @@ public interface GamesDAO {
     @Query("SELECT * FROM game ORDER BY last_played DESC")
     List<Game> getAll();
 
+    @Query("SELECT * FROM game WHERE id=:id")
+    Game getGameByID(long id);
+
     @Insert
-    long insertGame(Game game);
+    Long insertGame(Game game);
 
     @Query("DELETE from game where id=:id")
     void deleteGame(long id);

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class CounterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         Date d = new Date();
         name = formatter.format(d);
         red_name = getResources().getString(R.string.we);
@@ -77,6 +78,7 @@ public class CounterFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //Log.d("fail", "Currently loaded: " + Long.toString(currently_loaded));
         // Inflate the layout for this fragment
         root_view = inflater.inflate(R.layout.counter_fragment, container, false);
         //Get elements
@@ -94,8 +96,6 @@ public class CounterFragment extends Fragment {
         name_edit = root_view.findViewById(R.id.title);
         blue_name_edit = root_view.findViewById(R.id.blueTeamName);
         red_name_edit = root_view.findViewById(R.id.redTeamName);
-
-        setupUI();
 
         //Setup most of the click listeners
         name_edit.setOnClickListener(new View.OnClickListener() {
@@ -246,13 +246,23 @@ public class CounterFragment extends Fragment {
         }
 
         //If the fragment was initialized with information from the initializer, try to load from that game
+        long load_id = currently_loaded;
         try {
-            Game g = (Game) getArguments().getParcelable("game");
-            loadFromGame(g);
-            getArguments().remove("game");
+            load_id = (long) getArguments().get("game_id");
+            //Log.d("fail", "BUNDLED DATA EXISTS");
+            getArguments().clear();
         } catch (Exception e) {
+            //Log.d("fail", "no bundled data");
         }
-
+        //Log.d("fail", "Load id: " + load_id);
+        if (load_id != currently_loaded) {
+            LoadGameAsync l = new LoadGameAsync();
+            l.execute(load_id);
+        } else {
+            //Log.d("fail", "did not load game");
+            //If no game was attempting to load, setup normally
+            setupUI();
+        }
 
         return root_view;
     }
@@ -335,7 +345,7 @@ public class CounterFragment extends Fragment {
         selected_action = 0;
         selected_team = 0;
         //Set the default name_edit, the date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         Date d = new Date();
         name = formatter.format(d);
         red_name = getResources().getString(R.string.we);
@@ -362,14 +372,24 @@ public class CounterFragment extends Fragment {
 
         blue_moves.clear();
         String blue_move_string = g.blue_moves;
-        for (String move : blue_move_string.split(",")) {
-            blue_moves.add(Integer.parseInt(move));
+        if (!blue_move_string.isEmpty()) {
+            String[] blue_moves_split = blue_move_string.split(",");
+            //DONT Remove the last element since the string ends with a ",", it skips it!
+            for (int i = 0; i < blue_moves_split.length; i++) {
+                String move = blue_moves_split[i];
+                blue_moves.add(Integer.parseInt(move));
+            }
         }
 
         red_moves.clear();
         String red_move_string = g.red_moves;
-        for (String move : red_move_string.split(",")) {
-            red_moves.add(Integer.parseInt(move));
+        if (!red_move_string.isEmpty()) {
+            String[] red_moves_split = red_move_string.split(",");
+            //DONT Remove the last element since the string ends with a ",", it skips it!
+            for (int i = 0; i < red_moves_split.length; i++) {
+                String move = red_moves_split[i];
+                red_moves.add(Integer.parseInt(move));
+            }
         }
 
         currently_loaded = g.id;
@@ -385,10 +405,12 @@ public class CounterFragment extends Fragment {
                 .setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which_button) {
-                        //your deleting code
-                        DeleteGameAsync dga = new DeleteGameAsync();
-                        dga.execute(currently_loaded);
-                        reset();
+                        //Only delete if something is loaded
+                        if (currently_loaded != -1) {
+                            DeleteGameAsync dga = new DeleteGameAsync();
+                            dga.execute(currently_loaded);
+                            reset();
+                        }
                         dialog.dismiss();
                     }
 
@@ -422,13 +444,13 @@ public class CounterFragment extends Fragment {
                 t.setText(edit.getText());
                 switch (edit_index) {
                     case 0:
-                        name = edit.getText().toString();
+                        name = edit.getText().toString().trim();
                         break;
                     case 1:
-                        blue_name = edit.getText().toString();
+                        blue_name = edit.getText().toString().trim();
                         break;
                     case 2:
-                        red_name = edit.getText().toString();
+                        red_name = edit.getText().toString().trim();
                         break;
                 }
                 SaveGameAsync s = new SaveGameAsync();
@@ -460,14 +482,35 @@ public class CounterFragment extends Fragment {
             g.last_played = new Date().getTime();
 
             String blue_move_string = "";
-            for (int move : blue_moves) {
-                blue_move_string += Integer.toString(move) + ",";
+            if (blue_moves.size() > 30) {
+                for (int move : blue_moves.subList(blue_moves.size() -31, blue_moves.size()-1)) {
+                    blue_move_string += Integer.toString(move) + ",";
+                }
+            } else {
+                for (int move : blue_moves) {
+                    blue_move_string += Integer.toString(move) + ",";
+                }
             }
-            String red_move_string = "";
-            for (int move : red_moves) {
-                red_move_string += Integer.toString(move) + ",";
+            //Remove the last comma, it messes stuff up
+            if (blue_move_string.length() > 0) {
+                blue_move_string = blue_move_string.substring(0, blue_move_string.length()-1);
             }
 
+            String red_move_string = "";
+            if (red_moves.size() > 30) {
+                for (int move : red_moves.subList(red_moves.size() -31, red_moves.size()-1)) {
+                    red_move_string += Integer.toString(move) + ",";
+                }
+            } else {
+                for (int move : red_moves) {
+                    red_move_string += Integer.toString(move) + ",";
+                }
+            }
+
+            //Remove the last comma, it messes stuff up
+            if (red_move_string.length() > 0) {
+                red_move_string = red_move_string.substring(0, red_move_string.length() - 1);
+            }
             g.blue_moves = blue_move_string;
             g.red_moves = red_move_string;
 
@@ -493,6 +536,29 @@ public class CounterFragment extends Fragment {
             db.gamesDAO().deleteGame(ids[0]);
             db.close();
             return null;
+        }
+    }
+    public class LoadGameAsync extends AsyncTask<Long, Void, Void> {
+        Game g;
+        @Override
+        protected Void doInBackground(Long... ids) {
+            final GamesDatabase db = Room.databaseBuilder(getContext(),
+                    GamesDatabase.class, "Games").fallbackToDestructiveMigration().build();
+            g = db.gamesDAO().getGameByID(ids[0]);
+
+            db.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                loadFromGame(g);
+            } catch (Exception e) {
+                //Log.d("fail", "Failed loading! " + e);
+            }
+
         }
     }
 }
