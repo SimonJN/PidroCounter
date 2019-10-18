@@ -14,4 +14,6 @@
     <string name="change_name">Ändra namn</string>
     <string name="new_round">Ny runda</string>
     <string name="last_played">Senast spelad:</string>
+
+    <string name="default_date_pattern">dd-MM-yyyy kk:mm</string>
 </resources>

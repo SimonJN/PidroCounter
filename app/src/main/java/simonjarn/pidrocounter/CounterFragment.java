@@ -68,7 +68,7 @@ public class CounterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.default_date_pattern));
         Date d = new Date();
         name = formatter.format(d);
         red_name = getResources().getString(R.string.we);
@@ -345,7 +345,7 @@ public class CounterFragment extends Fragment {
         selected_action = 0;
         selected_team = 0;
         //Set the default name_edit, the date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.default_date_pattern));
         Date d = new Date();
         name = formatter.format(d);
         red_name = getResources().getString(R.string.we);
@@ -435,7 +435,9 @@ public class CounterFragment extends Fragment {
         final EditText edit = (EditText) dialogView.findViewById(R.id.edit_text);
         edit.setText(text.getText());
         if (edit_index == 0) {
-            edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25)});
+            edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(getResources().getInteger(R.integer.max_chars_title))});
+        } else {
+            edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(getResources().getInteger(R.integer.max_chars_team_name))});
         }
 
         dialogBuilder.setTitle(getResources().getString(R.string.change_name));

@@ -14,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -58,7 +59,7 @@ public class HistoryFragment extends Fragment {
             TextView title = (TextView) item.findViewById(R.id.saved_title);
             TextView last_played = (TextView) item.findViewById(R.id.saved_last_played);
             title.setText((String) g.name);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+            SimpleDateFormat formatter = new SimpleDateFormat(getResources().getString(R.string.default_date_pattern));
             last_played.setText(getResources().getString(R.string.last_played) + " " + formatter.format(g.last_played));
             active_games.addView(item);
             //Attach the game id data to the item
