@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#737474</color>
+    <color name="colorPrimaryDark">#ADADAD</color>
+    <color name="colorDisabled">#737474</color>
     <color name="colorAccent">#FF7B7B</color>
     <color name="textColorDark">#000000</color>
     <color name="textColorMiddle">#ADADAD</color>

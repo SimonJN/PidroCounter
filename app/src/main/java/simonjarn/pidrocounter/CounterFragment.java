@@ -203,6 +203,49 @@ public class CounterFragment extends Fragment {
             Button bt = (Button) inflater.inflate(R.layout.number_button, number_grid, false);
             bt.setText(Integer.toString(i));
 
+            if (i == 14) {
+                bt.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        int points = 28;
+                        if (selected_action == 1) {
+                            points = points * -1;
+                        }
+                        if (selected_team == 1) {
+                            blue_score += points;
+                            blue_score_text.setText(Integer.toString(blue_score));
+                            TextView move = (TextView) inflater.inflate(R.layout.team_move_text, blue_moves_grid, false);
+                            move.setText(Integer.toString(points));
+                            blue_moves_grid.addView(move);
+                            blue_moves.add(points);
+                            changeTeam(Math.abs(selected_team - 1));
+                            last_changed = 1;
+                            if (blue_moves_grid.getChildCount() > 5) {
+                                blue_moves_grid.removeViewAt(0);
+                            }
+                        } else {
+                            red_score += points;
+                            red_score_text.setText(Integer.toString(red_score));
+                            TextView move = (TextView) inflater.inflate(R.layout.team_move_text, red_moves_grid, false);
+                            move.setText(Integer.toString(points));
+                            red_moves_grid.addView(move);
+                            red_moves.add(points);
+                            changeTeam(Math.abs(selected_team - 1));
+                            last_changed = 0;
+                            if (red_moves_grid.getChildCount() > 5) {
+                                red_moves_grid.removeViewAt(0);
+                            }
+                        }
+                        if (selected_action == 1) {
+                            changeAction(0);
+                        }
+                        SaveGameAsync s = new SaveGameAsync();
+                        s.execute();
+
+                        return true;
+                    }
+            });}
+
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

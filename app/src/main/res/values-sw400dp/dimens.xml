@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appBarHeight">65dp</dimen>
+    <dimen name="appBarFontSize">27dp</dimen>
+    <dimen name="mainShadowHeight">4dp</dimen>
+
+    <dimen name="numberButtonSize">60dp</dimen>
+    <dimen name="numberButtonFontSize">27dp</dimen>
+    <dimen name="numberButtonMargin">7dp</dimen>
+
+    <dimen name="buttonOutlineWidth">2dp</dimen>
+    <dimen name="buttonCornerRadius">3dp</dimen>
+
+    <dimen name="actionButtonWidth">130dp</dimen>
+    <dimen name="actionButtonLayoutWidth">356dp</dimen>
+    <dimen name="actionButtonPadding">12dp</dimen>
+
+    <dimen name="manageButtonSize">60dp</dimen>
+    <dimen name="manageButtonPadding">10dp</dimen>
+    <dimen name="newGameButtonWidth">120dp</dimen>
+    <dimen name="newGameFontSize">18dp</dimen>
+
+    <dimen name="teamNameHeight">40dp</dimen>
+    <dimen name="teamNameFontSize">25dp</dimen>
+    <dimen name="teamScoreHeight">130dp</dimen>
+    <dimen name="teamScoreFontSize">60dp</dimen>
+    <dimen name="teamMovesWidth">30dp</dimen>
+    <dimen name="teamMovesFontSize">18dp</dimen>
+
+    <dimen name="savedGamesHeight">80dp</dimen>
+    <dimen name="savedGamesNameFontSize">24dp</dimen>
+    <dimen name="savedGamesDateFontSize">16dp</dimen>
+    <dimen name="savedGamesPadding">8dp</dimen>
+    <dimen name="savedGamesSeparatorHeight">1dp</dimen>
+    <dimen name="savedGamesArrowSize">45dp</dimen>
+
+    <dimen name="changeNameTextPadding">20dp</dimen>
+</resources>
