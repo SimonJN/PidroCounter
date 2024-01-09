@@ -14,7 +14,7 @@
     <string name="change_name">Ändra namn</string>
     <string name="new_round">Ny runda</string>
     <string name="last_played">Senast spelad:</string>
-    <string name="privacy_policy_url"><a href="https://github.com/SimonJN/PidroCounter/blob/dev-0.1.0/privacy-policy.md">Privacy Policy</a></string>
+    <string name="privacy_policy_url"><a href="https://github.com/SimonJN/PidroCounter/blob/1369c20b2eea4d1b30c25f207a87370b324ebab3/privacy-policy.md">Privacy Policy</a></string>
 
     <string name="default_date_pattern">dd-MM-yyyy kk:mm</string>
 </resources>
