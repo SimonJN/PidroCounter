@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_notepad"
             android:checked="true"/>
         <item android:id="@+id/action_settings"
-            android:title="@string/settings"
-            android:icon="@drawable/ic_settings" />
+            android:title="@string/info"
+            android:icon="@drawable/ic_info" />
    </group>
 </menu>

@@ -20,7 +20,7 @@
                 android:background="@android:color/white"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
-                android:text="@string/settings"
+                android:text="@string/info"
                 android:textColor="@color/textColorDark"
                 android:textSize="@dimen/appBarFontSize"
                 android:textStyle="bold" />
@@ -41,15 +41,6 @@
             android:textAlignment="center"
             android:text="Tips! Tryck länge på knapp 14 för att få satt in 28!"/>
 
-        <TextView
-            android:padding="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:textSize="25dp"
-            android:textColor="@color/textColorDark"
-            android:textAlignment="center"
-            android:text="Finns inga inställningar men här är lite credits"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -67,6 +58,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_outline"
             android:text="Logo: Aron Samulin"
+            android:fontFamily="sans-serif"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/textColorDark"/>
+
+        <TextView
+            android:id="@+id/privacy_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_outline"
+            android:text="@string/privacy_policy_url"
             android:fontFamily="sans-serif"
             android:textSize="20dp"
             android:padding="10dp"
