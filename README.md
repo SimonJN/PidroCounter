@@ -7,6 +7,4 @@ This is an android app for tracking your scores in the card game Pidro! It featu
 <img src="database.png" height="500">
 
 ## Download
-This project used to be on the Play Store, but is now distributed through binaries in GitHub releases. 
-
-[<img src="google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=simonjarn.pidrocounter)
+This project used to be on the Play Store, but is now distributed through binaries in GitHub releases.
